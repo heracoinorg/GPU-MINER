@@ -1,20 +1,10 @@
-EXTRA_DIST = conf.py apiref.rst changes.rst conformance.rst		\
-	gettingstarted.rst github_commits.c index.rst portability.rst	\
-	tutorial.rst upgrading.rst ext/refcounting.py
+EXTRA_DIST = CHANGES LICENSE README.rst CMakeLists.txt cmake android examples
+SUBDIRS = doc src test
 
-SPHINXBUILD = sphinx-build
-SPHINXOPTS = -d _build/doctrees $(SPHINXOPTS_EXTRA)
+# "make distcheck" builds the dvi target, so use it to check that the
+# documentation is built correctly.
+dvi:
+	$(MAKE) SPHINXOPTS_EXTRA=-W html
 
-html-local:
-	$(SPHINXBUILD) -b html $(SPHINXOPTS) $(srcdir) _build/html
-
-install-html-local: html
-	mkdir -p $(DESTDIR)$(htmldir)
-	cp -r _build/html $(DESTDIR)$(htmldir)
-
-uninstall-local:
-	rm -rf $(DESTDIR)$(htmldir)
-
-clean-local:
-	rm -rf _build
-	rm -f ext/refcounting.pyc
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = jansson.pc
